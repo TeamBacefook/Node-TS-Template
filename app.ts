@@ -9,6 +9,7 @@ import ApiError from "./utils/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { errorConverter, errorHandler } from "./middlewares/error";
 import * as morgan from "./config/morgan";
+import router from "./routes";
 const app: Application = express();
 
 app.use(morgan.successHandler);
@@ -24,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
 app.use(mongoSanitize());
+
+app.use("/v1", router);
 
 app.use((req, res, next) => {
   next(new ApiError(StatusCodes.NOT_FOUND, "Not found"));
